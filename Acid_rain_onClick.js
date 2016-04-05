@@ -159,8 +159,6 @@ O.prototype = {
 			   			this.vx = 1;
 			   			this.vy = -this.vy*.9;
 			   		}
-					
-
 			   }
 
 			}

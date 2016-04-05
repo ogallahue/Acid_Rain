@@ -12,6 +12,7 @@ var lines = [];
 var Bounce_dictionary={}; 
 var First = true;
 
+
 function random(min, max) {
     return Math.random() * (max - min) + min;
 }
@@ -21,7 +22,6 @@ function lineBoundary(sx,sy,ex,ey){
 		var slope = ((sy-ey)/(sx-ex));
 		var xcord = sx;
 		var ycord = sy;
-		console.log("FIRST");
 		if(slope < 0){
 			while(ycord > ey){
 				xcord -= slope;
@@ -40,9 +40,8 @@ function lineBoundary(sx,sy,ex,ey){
 	}
 }
 
-function circleBoundary(cX,cY,r){
+function circleBoundary(cX,cY,r){ //a+=.001
 	if(First){
-		console.log("FIRST")
 		for (var a = Math.PI*.5; a <= Math.PI*1.5; a+=.001) {
 			var slope = -(Math.cos(a)/Math.sin(a))
 			xcord = Math.floor(cX + r * Math.cos(a))
@@ -83,8 +82,8 @@ function O() {}
 O.prototype = {
 	init: function() {
 
-		// this.x = random(0, w);
-		this.x = random(300,550)
+		this.x = random(0, w);
+		// this.x = random(300,550)
 		this.y = 0;
 		this.rand_Color = random (500,200);
 
@@ -100,7 +99,6 @@ O.prototype = {
 
 		
 		this.bounce_Cord = Bounce_dictionary[Math.floor(this.x)];
-		if(!this.bounce_Cord) this.bounce_Cord = Bounce_dictionary[Math.floor(this.x)];
 		if(this.bounce_Cord) this.bounce_direction = this.bounce_Cord.slope;
 
 
@@ -232,14 +230,14 @@ function anim() {
 	ctx.fillText(" Gallahue", w/3+gap, h/5)
 	ctx.closePath();
 
-	drawCircle(w/3+20,h/5-20,20); // O
-	// drawCircle(w/3+57,h/5-14,16); // w
+	circleBoundary(w/3+20,h/5-20,20); // O
+	circleBoundary(w/3 + 90,h/5-14,15); // e1
+	circleBoundary(w/3 + 115,h/5-14,13);
 
-	drawCircle(w/3 + 90,h/5-14,15); // e1
-
-	drawCircle(w/3 + gap*1.51,h/5-14,14); // a1
-	drawCircle(w/3 + gap*1.9,h/5-14,14); // a2
-	drawCircle(w/3 + gap*2.54,h/5-14,14); // e2
+	circleBoundary(w/3 + gap*1.25,h/5-20,19); // G
+	circleBoundary(w/3 + gap*1.51,h/5-14,14); // a1
+	circleBoundary(w/3 + gap*1.9,h/5-14,14); // a2
+	circleBoundary(w/3 + gap*2.54,h/5-14,14); // e2
 
 	First = false;
 	// circleBoundary(w/3+20,h/5-20,20); // O
@@ -277,7 +275,7 @@ window.addEventListener("resize", resize);
 
 anim();
 setup();
-
+console.log(Bounce_dictionary)
 
 
 
