@@ -10,49 +10,52 @@ var txt = document.getElementById("content");
 var OutsideCount = 0;
 var lines = [];
 var Bounce_dictionary={}; 
-
+var First = true;
 
 function random(min, max) {
     return Math.random() * (max - min) + min;
 }
 
 function lineBoundary(sx,sy,ex,ey){
-	var slope = ((sy-ey)/(sx-ex));
-	var xcord = sx;
-	var ycord = sy;
+	if(First){  
+		var slope = ((sy-ey)/(sx-ex));
+		var xcord = sx;
+		var ycord = sy;
+		console.log("FIRST");
+		if(slope < 0){
+			while(ycord > ey){
+				xcord -= slope;
+				ycord += slope;
+				Bounce_dictionary[xcord] = {ycord,slope};
+			}
+		}else{
 
-	if(slope < 0){
-		while(ycord > ey){
-			xcord -= slope;
-			ycord += slope;
-
-			Bounce_dictionary[xcord] = {ycord,slope};
-		}
-	}else{
-
-		while(xcord < ex){
-			xcord += slope;
-			ycord += slope;
-
-			Bounce_dictionary[xcord] = {ycord,slope};
-			// lines.push( {xcord,ycord,slope} )
+			while(xcord < ex){
+				xcord += slope;
+				ycord += slope;
+				Bounce_dictionary[xcord] = {ycord,slope};
+				// lines.push( {xcord,ycord,slope} )
+			}
 		}
 	}
 }
-function circleBoundary(cX,cY,r){
-	
-	for (var a = Math.PI*.5; a <= Math.PI*1.5; a+=.001) {
-		var slope = -(Math.cos(a)/Math.sin(a))
-		xcord = Math.floor(cX + r * Math.cos(a))
-		ycord = Math.floor(cY + r * Math.sin(a))
-		Bounce_dictionary[xcord] = {ycord,slope};
-	}
 
-	for (var a = Math.PI*2.5; a >= Math.PI*1.5; a-=.001) {
-		var slope = -(Math.cos(a)/Math.sin(a))
-		xcord = Math.floor(cX + r * Math.cos(a))
-		ycord = Math.floor(cY + r * Math.sin(a))
-		Bounce_dictionary[xcord] = {ycord,slope};
+function circleBoundary(cX,cY,r){
+	if(First){
+		console.log("FIRST")
+		for (var a = Math.PI*.5; a <= Math.PI*1.5; a+=.001) {
+			var slope = -(Math.cos(a)/Math.sin(a))
+			xcord = Math.floor(cX + r * Math.cos(a))
+			ycord = Math.floor(cY + r * Math.sin(a))
+			Bounce_dictionary[xcord] = {ycord,slope};
+		}
+
+		for (var a = Math.PI*2.5; a >= Math.PI*1.5; a-=.001) {
+			var slope = -(Math.cos(a)/Math.sin(a))
+			xcord = Math.floor(cX + r * Math.cos(a))
+			ycord = Math.floor(cY + r * Math.sin(a))
+			Bounce_dictionary[xcord] = {ycord,slope};
+		}
 	}
 }
 
@@ -190,6 +193,7 @@ function resize(){
 	w = c.width = window.innerWidth;
 	h = c.height = window.innerHeight;
 	Bounce_dictionary = {};
+	First = true;
 
 }
 
@@ -218,6 +222,7 @@ function anim() {
 	// drawBumper(w-300,300,w-215,215);
 
 	// drawCircle(w/2,h/2,50);
+
 	ctx.beginPath();
 	ctx.font = "50px Arial";
 	ctx.fillStyle = "#000099";
@@ -227,12 +232,22 @@ function anim() {
 	ctx.fillText(" Gallahue", w/3+gap, h/5)
 	ctx.closePath();
 
+	drawCircle(w/3+20,h/5-20,20); // O
+	// drawCircle(w/3+57,h/5-14,16); // w
+
+	drawCircle(w/3 + 90,h/5-14,15); // e1
+
 	drawCircle(w/3 + gap*1.51,h/5-14,14); // a1
 	drawCircle(w/3 + gap*1.9,h/5-14,14); // a2
 	drawCircle(w/3 + gap*2.54,h/5-14,14); // e2
 
-	drawCircle(w/3 + 90,h/5-14,15); // e1
-	drawCircle(w/3+20,h/5-20,20); // O
+	First = false;
+	// circleBoundary(w/3+20,h/5-20,20); // O
+	// circleBoundary(w/3 + 90,h/5-14,15); // e1
+	
+	// circleBoundary(w/3 + gap*1.51,h/5-14,14); // a1
+	// circleBoundary(w/3 + gap*1.9,h/5-14,14); // a2
+	// circleBoundary(w/3 + gap*2.54,h/5-14,14); // e2
 
 
 	
@@ -254,6 +269,7 @@ function anim() {
 		drops[i].draw();
 	}
 	requestAnimationFrame(anim);
+
 }
 
 
@@ -262,7 +278,6 @@ window.addEventListener("resize", resize);
 anim();
 setup();
 
-console.log(Bounce_dictionary);
 
 
 
