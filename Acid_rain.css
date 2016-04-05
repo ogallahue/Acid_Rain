@@ -1,0 +1,32 @@
+html, body {
+  /*overflow: hidden;*/
+  margin: auto;
+  color: white;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  padding: none;
+  background-color: "#2C2C7D";
+  height: 100%;
+}
+
+#canvas{
+  position:absolute;
+  padding: 0;
+  margin: 0;
+  z-index: 0;
+}
+
+#content{
+  position: relative;
+  text-align: center;
+  display: inline-block;
+}
+
+#wrapper{
+  text-align: center;
+}
+
+h1{
+  font-size: 5em;
+  margin-bottom: 0px;
+
+}
