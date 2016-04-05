@@ -4,7 +4,7 @@ var ctx = c.getContext("2d");
 var w = c.width = window.innerWidth;
 var h = c.height = window.innerHeight;
 var clearColor = 'rgba(0, 0, 0, .1)';
-var max = 300; //30
+var max = 30; //30
 var drops = [];
 var txt = document.getElementById("content");
 var OutsideCount = 0;
@@ -49,9 +49,6 @@ function circleBoundary(cX,cY,r){
 		var slope = -(Math.cos(a)/Math.sin(a))
 		xcord = Math.floor(cX + r * Math.cos(a))
 		ycord = Math.floor(cY + r * Math.sin(a))
-		if(Bounce_dictionary[xcord] != 'undefined'){ // OVERLAP
-			Overlap[xcord] = Bounce_dictionary[xcord];
-		}
 		Bounce_dictionary[xcord] = {ycord,slope};
 	}
 
@@ -59,9 +56,6 @@ function circleBoundary(cX,cY,r){
 		var slope = -(Math.cos(a)/Math.sin(a))
 		xcord = Math.floor(cX + r * Math.cos(a))
 		ycord = Math.floor(cY + r * Math.sin(a))
-		if(Bounce_dictionary[xcord] != 'undefined'){ // OVERLAP
-			Overlap[xcord] = Bounce_dictionary[xcord];
-		}
 		Bounce_dictionary[xcord] = {ycord,slope};
 	}
 }
@@ -78,9 +72,10 @@ function drawBumper(x_start,y_start,x_end,y_end){
 function drawCircle(cX,cY,r){
 	ctx.beginPath();
 	ctx.arc(cX,cY,r,0,2*Math.PI);
+	ctx.strokeStyle = "rgb(255,255,255)";
 	ctx.stroke();
 	ctx.closePath();
-	circleBoundary(cX,cY,r)
+	circleBoundary(cX,cY,r);
 }
 
 
@@ -89,8 +84,8 @@ function O() {}
 O.prototype = {
 	init: function() {
 
-		this.x = random(0, w);
-		// this.x = random(300,550)
+		// this.x = random(0, w);
+		this.x = random(300,550)
 		this.y = 0;
 		this.rand_Color = random (500,200);
 
@@ -220,23 +215,28 @@ function anim() {
 	ctx.fillRect(0,0,w,h);
 	ctx.closePath();
 
-	drawBumper(150,150,200,200);
-	drawBumper(w-200,200,w-150,150);
-	drawBumper(w-300,300,w-215,215);
+	// drawBumper(150,150,200,200);
+	// drawBumper(w-200,200,w-150,150);
+	// drawBumper(w-300,300,w-215,215);
 
-	drawCircle(w/2,h/2,50);
+	// drawCircle(w/2,h/2,50);
 
-	circleBoundary(w/3 + 90,h/5-14,15); // e
-	circleBoundary(w/3+20,h/5-20,20); // O
+	drawCircle(w/2 + 66,h/5-14,14); // a1
+	drawCircle(w/2 + 116,h/5-14,14); // a2
+	drawCircle(w/2 + 200,h/5-14,14); // a2
+
+	drawCircle(w/3 + 90,h/5-14,15); // e1
+	drawCircle(w/3+20,h/5-20,20); // O
 
 
 	ctx.beginPath();
 	ctx.font = "50px Arial";
 	ctx.fillStyle = "#000099";
-	ctx.fillText("Owen Gallahue", w/3, h/5);
-	// ctx.fillText("width:" + ctx.measureText(txt).width, 625, 70);
+	ctx.fillText("Owen", w/3, h/5);
+	ctx.fillText(" Gallahue", w/2, h/5)
+	// ctx.fillText("width:" + , 625, 70);
 	ctx.closePath();
-
+// 885
 
 	// ctx.beginPath();
 	// ctx.strokeStyle = "rgb(255,0,255)";

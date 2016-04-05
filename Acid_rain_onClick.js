@@ -37,8 +37,7 @@ function lineBoundary(sx,sy,ex,ey){
 		while(ycord > ey){
 			xcord -= slope;
 			ycord += slope;
-			Bounce_dictionary[xcord] = ycord;
-			lines.push( {xcord,ycord,slope} );
+			Bounce_dictionary[xcord] = {ycord,slope};
 		}
 		
 	}else{
@@ -46,10 +45,46 @@ function lineBoundary(sx,sy,ex,ey){
 		while(xcord < ex){
 			xcord += slope;
 			ycord += slope;
-			Bounce_dictionary[xcord] = ycord;
-			lines.push( {xcord,ycord,slope} )
+			Bounce_dictionary[xcord] = {ycord,slope};
 		}
 }
+}
+function circleBoundary(cX,cY,r){
+
+	for (var a = Math.PI*.5; a <= Math.PI*1.5; a+=.001) {
+		var slope = -(Math.cos(a)/Math.sin(a))
+		xcord = Math.floor(cX + r * Math.cos(a))
+		ycord = Math.floor(cY + r * Math.sin(a))
+
+			Bounce_dictionary[xcord] = {ycord,slope};
+		
+	}
+
+	for (var a = Math.PI*2.5; a >= Math.PI*1.5; a-=.001) {
+		var slope = -(Math.cos(a)/Math.sin(a))
+		xcord = Math.floor(cX + r * Math.cos(a))
+		ycord = Math.floor(cY + r * Math.sin(a))
+
+			Bounce_dictionary[xcord] = {ycord,slope};
+		}
+	}
+}
+
+function drawBumper(x_start,y_start,x_end,y_end){
+	ctx.beginPath();
+	ctx.moveTo(x_start,y_start);
+	ctx.lineTo(x_end,y_end);
+	ctx.strokeStyle = "rgb(255,255,255)";
+	ctx.stroke();
+	ctx.closePath();
+	lineBoundary(x_start,y_start,x_end,y_end);
+}
+function drawCircle(cX,cY,r){
+	ctx.beginPath();
+	ctx.arc(cX,cY,r,0,2*Math.PI);
+	ctx.stroke();
+	ctx.closePath();
+	circleBoundary(cX,cY,r)
 }
 
 
@@ -114,12 +149,6 @@ O.prototype = {
 	},
 	update: function() {
 		if(this.y < this.hit){
-
-			for (var i=0;i<lines.length;i++) {
-			   var point = lines[i];
-			   var xcord = point.xcord;
-			   var ycord = point.ycord;
-			   var slope = point.slope;
 
 			   if(Math.floor(this.x) == xcord && (Math.floor(this.y)+1 == ycord || Math.floor(this.y)+2 == ycord)){
 			   		if (slope == -1){
