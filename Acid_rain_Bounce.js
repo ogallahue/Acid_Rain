@@ -10,7 +10,7 @@ var txt = document.getElementById("content");
 var OutsideCount = 0;
 var lines = [];
 var Bounce_dictionary={}; 
-var Overlap = {};
+
 
 function random(min, max) {
     return Math.random() * (max - min) + min;
@@ -25,9 +25,7 @@ function lineBoundary(sx,sy,ex,ey){
 		while(ycord > ey){
 			xcord -= slope;
 			ycord += slope;
-			if(Bounce_dictionary[xcord] == 'undefined'){ // OVERLAP
-				Overlap[xcord] = Bounce_dictionary[xcord];
-			}
+
 			Bounce_dictionary[xcord] = {ycord,slope};
 		}
 	}else{
@@ -35,9 +33,7 @@ function lineBoundary(sx,sy,ex,ey){
 		while(xcord < ex){
 			xcord += slope;
 			ycord += slope;
-			if(Bounce_dictionary[xcord] != 'undefined'){ // OVERLAP
-				Overlap[xcord] = Bounce_dictionary[xcord];
-			}
+
 			Bounce_dictionary[xcord] = {ycord,slope};
 			// lines.push( {xcord,ycord,slope} )
 		}
@@ -100,7 +96,7 @@ O.prototype = {
 		this.size = this.hit/200;
 
 		
-		this.bounce_Cord = Overlap[Math.floor(this.x)];
+		this.bounce_Cord = Bounce_dictionary[Math.floor(this.x)];
 		if(!this.bounce_Cord) this.bounce_Cord = Bounce_dictionary[Math.floor(this.x)];
 		if(this.bounce_Cord) this.bounce_direction = this.bounce_Cord.slope;
 
@@ -193,6 +189,8 @@ O.prototype = {
 function resize(){
 	w = c.width = window.innerWidth;
 	h = c.height = window.innerHeight;
+	Bounce_dictionary = {};
+
 }
 
 function setup(){
@@ -220,22 +218,24 @@ function anim() {
 	// drawBumper(w-300,300,w-215,215);
 
 	// drawCircle(w/2,h/2,50);
+	ctx.beginPath();
+	ctx.font = "50px Arial";
+	ctx.fillStyle = "#000099";
+	var name = "Owen"
+	ctx.fillText(name, w/3, h/5);
+	var gap = ctx.measureText(name).width;
+	ctx.fillText(" Gallahue", w/3+gap, h/5)
+	ctx.closePath();
 
-	drawCircle(w/2 + 66,h/5-14,14); // a1
-	drawCircle(w/2 + 116,h/5-14,14); // a2
-	drawCircle(w/2 + 200,h/5-14,14); // a2
+	drawCircle(w/3 + gap*1.51,h/5-14,14); // a1
+	drawCircle(w/3 + gap*1.9,h/5-14,14); // a2
+	drawCircle(w/3 + gap*2.54,h/5-14,14); // e2
 
 	drawCircle(w/3 + 90,h/5-14,15); // e1
 	drawCircle(w/3+20,h/5-20,20); // O
 
 
-	ctx.beginPath();
-	ctx.font = "50px Arial";
-	ctx.fillStyle = "#000099";
-	ctx.fillText("Owen", w/3, h/5);
-	ctx.fillText(" Gallahue", w/2, h/5)
-	// ctx.fillText("width:" + , 625, 70);
-	ctx.closePath();
+	
 // 885
 
 	// ctx.beginPath();
